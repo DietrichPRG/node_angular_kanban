@@ -3,7 +3,10 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
-- main
+  tags:
+    include:
+      - build.*
+    
 
 resources:
 - repo: self
@@ -13,7 +16,7 @@ variables:
   dockerRegistryServiceConnection: 'ce5fe094-0107-4c73-a4f9-daa569c5bec4'
   imageRepository: 'dietrichprgnodeangularkanban'
   containerRegistry: 'dietrichcontainerregistry.azurecr.io'
-  dockerfilePath: '$(Build.SourcesDirectory)/desafio-tecnico-backend/BACK/Dockerfile'
+  dockerComposePath: '$(Build.SourcesDirectory)/desafio-tecnico-backend/docker-compose.yml'
   tag: '$(Build.BuildId)'
 
   # Agent VM image name
@@ -33,7 +36,7 @@ stages:
       inputs:
         command: buildAndPush
         repository: $(imageRepository)
-        dockerfile: $(dockerfilePath)
+        dockerComposeFile: $(dockerComposePath)
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
