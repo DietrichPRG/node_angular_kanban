@@ -1,0 +1,66 @@
+version: '3.8'
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGODB_DATABASE_NAME}
+    env_file:
+      - ./.env
+    volumes:
+      - mongo:/data/db
+    ports:
+      - '27017:27017'
+    networks:
+      - networkAda
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis:/data/db
+    networks:
+      - networkAda
+  api:
+    build: 
+      context: ./BACK
+    container_name: api
+    env_file:
+      - ./.env
+    ports:
+      - '5000:5000'
+    command: >
+      sh -c 'yarn dev'
+    depends_on:
+      - mongo
+      - redis
+    networks:
+      - networkAda
+  front:
+    build: 
+      context: ./FRONT
+    container_name: front
+    env_file:
+      - ./.env
+    ports:
+      - '3000:3000'
+    command: >
+      sh -c 'yarn start'
+    depends_on:
+      - mongo
+      - redis
+      - api
+    networks:
+      - networkAda
+volumes:
+  mongo:
+  redis:
+  api:
+  front:
+
+networks:
+  networkAda: 
+    driver: bridge
