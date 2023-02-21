@@ -1,0 +1,25 @@
+<div class="box-center">
+  <mat-card class="text-center" style="width:400px;padding: 32px;">
+    <mat-card-content>
+      <h2>Login</h2>
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Login</mat-label>
+        <input matInput type="text" [formControl]="loginFormControl">
+        <a mat-icon-button matSuffix>
+          <mat-icon>person</mat-icon>
+        </a>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Senha</mat-label>
+        <input matInput [formControl]="senhaFormControl" [type]="visivel ? 'password' : 'text'">
+        <a mat-icon-button matSuffix (click)="visivel = !visivel" [attr.aria-label]="'Esconder senha'"
+          [attr.aria-pressed]="visivel">
+          <mat-icon>{{visivel ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </a>
+      </mat-form-field>
+      <div class="align-between">
+        <button mat-raised-button class="w-100" (click)="login()" color="primary">Login</button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

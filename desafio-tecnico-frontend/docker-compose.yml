@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  api:
+    build: 
+      context: ./BACK
+    container_name: api
+    env_file:
+      - ./.env
+    ports:
+      - '5000:5000'
+    command: >
+      sh -c 'yarn server'
+    networks:
+      - networkAda
+  front:
+    build: 
+      context: ./FRONT
+    container_name: front
+    env_file:
+      - ./.env
+    ports:
+      - '3000:3000'
+    command: >
+      sh -c 'yarn start'
+    depends_on:
+      - api
+    networks:
+      - networkAda
+volumes:
+  api:
+  front:
+
+networks:
+  networkAda: 
+    driver: bridge
